@@ -3,10 +3,16 @@ from typing import List
 
 
 operators = "+-*/"
+operations = {
+	'+': lambda x, y: x + y,
+	'-': lambda x, y: x - y,
+	'*': lambda x, y: x * y,
+	'/': lambda x, y: x / y
+}
 precedence = {"*": 3, "/": 3, "+": 2, "-": 2, "(": 1}
 
 
-def infix2postfix(infix: List[str]) -> List[str]:
+def infix2Postfix(infix: List[str]) -> List[str]:
 	"""Convert infix expression to postfix expression (reversed Polish notation)"""
 	tokens = []
 	postfix = []
@@ -34,11 +40,37 @@ def infix2postfix(infix: List[str]) -> List[str]:
 	return postfix
 
 
+def evaluatePostfix(postfix: List[str]) -> float:
+	"""Evaluate postfix expression"""
+	stack = []
+
+	for token in postfix:
+		if token in operators:
+			b = stack.pop()
+			a = stack.pop()
+			operation = operations[token]
+			c = operation(a, b)
+			stack.append(c)
+		else:
+			stack.append(float(token))
+
+	# print(len(stack))
+	return stack.pop()
+
+
 def evaluate(expression: str):
 	infix = re.split("([ ()])", expression)  # split with respect to brackets and spaces
 	infix = list(filter(lambda string: string and string != " ", infix))  # remove empty strings and spaces
-	postfix = infix2postfix(infix)
+	postfix = infix2Postfix(infix)
 
 	print(expression)
 	print(infix)
 	print(postfix)
+
+	ans = evaluatePostfix(postfix)
+	approx = eval(expression)
+	err = abs(ans - approx)
+
+	print(f"ans = {ans}")
+	print(f"test = {approx}")
+	print(f"absolute error = {err}")
