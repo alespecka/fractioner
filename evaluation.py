@@ -1,18 +1,18 @@
 import re
-from typing import List
+from typing import List, Iterable
 
 
 operators = "+-*/"
 operations = {
-	'+': lambda x, y: x + y,
-	'-': lambda x, y: x - y,
-	'*': lambda x, y: x * y,
-	'/': lambda x, y: x / y
+	"+": lambda x, y: x + y,
+	"-": lambda x, y: x - y,
+	"*": lambda x, y: x * y,
+	"/": lambda x, y: x / y
 }
 precedence = {"*": 3, "/": 3, "+": 2, "-": 2, "(": 1}
 
 
-def infix2Postfix(infix: List[str]) -> List[str]:
+def infix2Postfix(infix: Iterable[str]) -> List[str]:
 	"""Convert infix expression to postfix expression (reversed Polish notation)"""
 	tokens = []
 	postfix = []
@@ -40,7 +40,13 @@ def infix2Postfix(infix: List[str]) -> List[str]:
 	return postfix
 
 
-def evaluatePostfix(postfix: List[str]) -> float:
+def strFraction2Float(s: str) -> float:
+	s = s.replace("_", "+")
+	f = eval(s)
+	return f
+
+
+def evaluatePostfix(postfix: Iterable[str]) -> float:
 	"""Evaluate postfix expression"""
 	stack = []
 
@@ -52,15 +58,21 @@ def evaluatePostfix(postfix: List[str]) -> float:
 			c = operation(a, b)
 			stack.append(c)
 		else:
-			stack.append(float(token))
+			stack.append(strFraction2Float(token))
 
 	# print(len(stack))
 	return stack.pop()
 
 
-def evaluate(expression: str):
-	infix = re.split("([ ()])", expression)  # split with respect to brackets and spaces
-	infix = list(filter(lambda string: string and string != " ", infix))  # remove empty strings and spaces
+def parse(expression: str) -> Iterable[str]:
+	tokens = re.split("([ ()])", expression)  # split with respect to parentheses and spaces
+	tokens = filter(lambda string: string and string != " ", tokens)  # remove empty strings and spaces
+	return tokens
+
+
+def evaluate(expression: str) -> None:
+	infix = parse(expression)
+	infix = list(infix)
 	postfix = infix2Postfix(infix)
 
 	print(expression)
