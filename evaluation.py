@@ -85,19 +85,11 @@ def convertMixedFractions(expression: str) -> str:
 	return "".join(newTokens)
 
 
-def evaluate(expression: str) -> None:
+def approxEvaluate(expression: str) -> float:
+	return eval(convertMixedFractions(expression))
+
+
+def evaluate(expression: str) -> float:
 	infix = parse(expression)
-	infix = list(infix)
 	postfix = infix2Postfix(infix)
-
-	print(expression)
-	print(infix)
-	print(postfix)
-
-	ans = evaluatePostfix(postfix)
-	approx = eval(convertMixedFractions(expression))
-	err = abs(ans - approx)
-
-	print(f"ans = {ans}")
-	print(f"test = {approx}")
-	print(f"absolute error = {err}")
+	return evaluatePostfix(postfix)
