@@ -13,7 +13,7 @@ def main() -> None:
 
 
 def testMain() -> None:
-	expression = "(1/2 + 3/4) * 4"
+	expression = "(1_1/4 * 4 + 5) * 1/3"
 	# expression = "(2.2 - 0.2) * 3 + 4"
 	evaluate(expression)
 

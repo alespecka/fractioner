@@ -70,6 +70,21 @@ def parse(expression: str) -> Iterable[str]:
 	return tokens
 
 
+def convertMixedFractions(expression: str) -> str:
+	"""Add parentheses around mixed fraction and convert '_' to '+', e.g. '3 * 1_1/2' becomes '3*(1+1/2)'."""
+	tokens = parse(expression)
+	newTokens = []
+	for string in tokens:
+		if '_' in string:
+			newTokens.append('(')
+			newTokens.append(string.replace('_', '+'))
+			newTokens.append(')')
+		else:
+			newTokens.append(string)
+
+	return "".join(newTokens)
+
+
 def evaluate(expression: str) -> None:
 	infix = parse(expression)
 	infix = list(infix)
@@ -80,7 +95,7 @@ def evaluate(expression: str) -> None:
 	print(postfix)
 
 	ans = evaluatePostfix(postfix)
-	approx = eval(expression)
+	approx = eval(convertMixedFractions(expression))
 	err = abs(ans - approx)
 
 	print(f"ans = {ans}")
