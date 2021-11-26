@@ -1,6 +1,11 @@
 import unittest
 
-from evaluation import parse, infix2Postfix, convertMixedFractions, evaluate, approxEvaluate, evaluatePostfix
+from evaluation import parse, infix2Postfix, convertMixedFractions, evaluate, approxEvaluate, evaluatePostfix,\
+	parseMixedFraction
+
+# testData = [
+# 	{"expression": "(1_1/4 * 4 + 5) * 1/3"}
+# ]
 
 
 class TestEvaluation(unittest.TestCase):
@@ -34,4 +39,11 @@ class TestEvaluation(unittest.TestCase):
 		approx = eval(convertMixedFractions(expression))
 		self.assertAlmostEqual(exact, approx)
 
-# def evaluatePostfixTest(self):
+	def testParseMixedFraction(self):
+		self.assertEqual(parseMixedFraction("5"), (5, 1, 0))
+		self.assertEqual(parseMixedFraction("12/104"), (12, 104, 0))
+		self.assertEqual(parseMixedFraction("77_302/43"), (302, 43, 77))
+
+		invalid = ["1/2/3", "978_17", "52/9_1", "3_3_3", "/3", "_12", "_31/5", "0.2_1/2", ""]
+		for term in invalid:
+			self.assertRaises(SyntaxError, parseMixedFraction, term)

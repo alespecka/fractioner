@@ -1,5 +1,5 @@
 import re
-from typing import List, Iterable
+from typing import List, Tuple, Iterable
 
 
 operators = "+-*/"
@@ -44,6 +44,26 @@ def strFraction2Float(s: str) -> float:
 	s = s.replace("_", "+")
 	f = eval(s)
 	return f
+
+
+def parseMixedFraction(term: str) -> Tuple[int, int, int]:
+	message = "term has an invalid format"
+
+	if '/' in term:
+		if '_' in term:
+			if not re.match("[0-9]+_[0-9]+/[0-9]+$", term):
+				raise SyntaxError(message)
+			whole, numerator, denominator = re.split("[_/]", term)
+			return int(numerator), int(denominator), int(whole)
+		else:
+			if not re.match("[0-9]+/[0-9]+$", term):
+				raise SyntaxError(message)
+			numerator, denominator = term.split("/")
+			return int(numerator), int(denominator), 0
+	else:
+		if not re.match("[0-9]+$", term):
+			raise SyntaxError(message)
+		return int(term), 1, 0
 
 
 def evaluatePostfix(postfix: Iterable[str]) -> float:
