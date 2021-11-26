@@ -85,6 +85,11 @@ def evaluatePostfix(postfix: Iterable[str]) -> float:
 
 
 def parse(expression: str) -> Iterable[str]:
+	if not expression:
+		raise SyntaxError("expression is empty")
+	if not re.match("[-+*/()_0-9 ]+$", expression):
+		raise SyntaxError("expression contains unsupported characters")
+
 	tokens = re.split("([ ()])", expression)  # split with respect to parentheses and spaces
 	tokens = filter(lambda string: string and string != " ", tokens)  # remove empty strings and spaces
 	return tokens

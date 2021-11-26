@@ -14,13 +14,17 @@ class TestEvaluation(unittest.TestCase):
 		lst = list(parse(expression))
 		self.assertEqual(lst, ["(", "1_1/4", "*", "4", "+", "5", ")", "*", "1/3"])
 
+		invalid = ["", "2.1 + 14", "(1_1/4 * a + 5) * 1/3"]
+		for expression in invalid:
+			self.assertRaises(SyntaxError, evaluate, expression)
+
 	def testInfix2Postfix(self):
 		def assertInfixPostfixMatch(infixString, postfix):
 			self.assertEqual(infix2Postfix(parse(infixString)), postfix)
 
 		assertInfixPostfixMatch("(1_1/4 * 4 + 5) * 1/3", ["1_1/4", "4", "*", "5", "+", "1/3", "*"])
-		assertInfixPostfixMatch("(A + B) * (C - D)", ["A", "B", "+", "C", "D", "-", "*"])
-		assertInfixPostfixMatch("(A + B) * C - (D - E) / F", ["A", "B", "+", "C", "*", "D", "E", "-", "F", "/", "-"])
+		assertInfixPostfixMatch("(1 + 2) * (3 - 4)", ["1", "2", "+", "3", "4", "-", "*"])
+		assertInfixPostfixMatch("(1 + 2) * 3 - (4 - 5) / -6", ["1", "2", "+", "3", "*", "4", "5", "-", "-6", "/", "-"])
 
 	def testConvertMixedFractions(self):
 		self.assertEqual(convertMixedFractions("3 * 1_1/2 - 3_4/5"), "3*(1+1/2)-(3+4/5)")
@@ -33,6 +37,10 @@ class TestEvaluation(unittest.TestCase):
 
 	def testEvaluate(self):
 		self.assertAlmostEqual(evaluate("(1_1/4 * 4 + 5) * 1/3"), 10/3)
+
+		invalid = ["", "2.1 + 14", "(1_1/4 * a + 5) * 1/3"]
+		for expression in invalid:
+			self.assertRaises(SyntaxError, evaluate, expression)
 
 		expression = "3 * 1_1/2 - 3_4/5"
 		exact = evaluate(expression)
