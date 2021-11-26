@@ -1,6 +1,8 @@
 import re
 from typing import List, Tuple, Iterable
 
+from fraction import Fraction
+
 
 operators = "+-*/"
 operations = {
@@ -78,7 +80,9 @@ def evaluatePostfix(postfix: Iterable[str]) -> float:
 			c = operation(a, b)
 			stack.append(c)
 		else:
-			stack.append(strFraction2Float(token))
+			fraction = Fraction(*parseMixedFraction(token))
+			# strFraction2Float(token)
+			stack.append(fraction)
 
 	# print(len(stack))
 	return stack.pop()
