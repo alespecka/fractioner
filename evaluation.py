@@ -100,6 +100,8 @@ def evaluatePostfix(postfix: Iterable[str]) -> Fraction:
 
 	for token in postfix:
 		if token in operators:
+			if len(stack) < 2:
+				raise InputError()
 			b = stack.pop()
 			a = stack.pop()
 			operation = operations[token]
@@ -111,6 +113,9 @@ def evaluatePostfix(postfix: Iterable[str]) -> Fraction:
 			stack.append(fraction)
 
 	# print(len(stack))
+	if len(stack) != 1:
+		raise InputError()
+
 	return stack.pop()
 
 
@@ -126,13 +131,10 @@ def parse(expression: str) -> Iterable[str]:
 	if not expression:
 		raise InputError("expression is empty")
 
-	obj = re.search("[^-+*/()_0-9 ]", expression)
-	if obj:
-		span = obj.span()
+	searchObj = re.search("[^-+*/()_0-9 ]", expression)
+	if searchObj:
+		span = searchObj.span()
 		raise InputError(f"invalid character '{expression[span[0] : span[1]]}'", span)
-	# for i, char in enumerate(expression):
-	# 	if char not in validCharacters:
-	# 		raise InputError(f"invalid character '{char}'", i)
 
 	tokens = re.split("([ ()])", expression)  # split with respect to parentheses and spaces
 	tokens = filter(lambda string: string and string != " ", tokens)  # remove empty strings and spaces
