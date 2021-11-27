@@ -1,8 +1,9 @@
 from typing import Tuple
+import math
 
 
 def calculateGreatestCommonDivisor(a: int, b: int) -> int:
-	"""Euclidean algorithm for calculating the greatest common divisor"""
+	"""Return greatest common divisor calculated by the Euclidean algorithm."""
 	while a != 0:
 		a, b = b % a, a
 
@@ -10,14 +11,18 @@ def calculateGreatestCommonDivisor(a: int, b: int) -> int:
 
 
 def mixedFraction2Fraction(numerator: int, denominator: int, whole: int) -> Tuple[int, int]:
+	"""Convert mixed fraction to regular fraction and return it as a tuple (<numerator>, <denominator>)."""
 	return numerator + whole * denominator, denominator
 
 
 def fraction2MixedFraction(numerator: int, denominator: int) -> Tuple[int, int, int]:
+	"""Convert regular fraction to mixed fraction and return in as a tuple (<numerator>, <denominator>, <whole>)."""
 	return numerator % denominator, denominator, numerator // denominator
 
 
 class Fraction:
+	"""Represents a symbolic fraction with overloaded operators +, -, *, / and conversion to float and string."""
+
 	def __init__(self, numerator: int, denominator: int = 1, whole: int = 0):
 		if denominator == 0:
 			raise ZeroDivisionError("division by zero")
@@ -26,8 +31,9 @@ class Fraction:
 
 		self.simplify()
 
-	def simplify(self):
-		divisor = calculateGreatestCommonDivisor(self.numerator, self.denominator)
+	def simplify(self) -> None:
+		"""Simplify the fraction by dividing the numerator and denominator by the greatest common divisor."""
+		divisor = calculateGreatestCommonDivisor(self.denominator, self.numerator)
 		self.numerator //= divisor
 		self.denominator //= divisor
 
@@ -38,12 +44,9 @@ class Fraction:
 				return f"{numerator}"
 			if numerator == 0:
 				return 0
-
 			return f"{numerator}/{denominator}"
-
 		if numerator == 0:
 			return f"{whole}"
-
 		return f"{whole}_{numerator}/{denominator}"
 
 	def __add__(self, other):
