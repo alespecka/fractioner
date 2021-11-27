@@ -2,6 +2,7 @@ import re
 from typing import List, Tuple, Iterable
 
 from fraction import Fraction
+from input_error import InputError
 
 
 operators = "+-*/"
@@ -29,46 +30,71 @@ def infix2Postfix(infix: Iterable[str]) -> List[str]:
 			tokens.append(token)
 
 		elif token == ")":
+			if not tokens:
+				raise InputError("mismatched parenthesis")
 			topToken = tokens.pop()
 			while topToken != "(":
 				postfix.append(topToken)
+				if not tokens:
+					raise InputError("mismatched parenthesis")
 				topToken = tokens.pop()
+
 		else:
 			postfix.append(token)
 
 	while tokens:
-		postfix.append(tokens.pop())
+		token = tokens.pop()
+		if token == "(":
+			raise InputError("mismatched parenthesis")
+		postfix.append(token)
 
 	return postfix
 
 
-def strFraction2Float(s: str) -> float:
-	s = s.replace("_", "+")
-	f = eval(s)
-	return f
+# def strFraction2Float(s: str) -> float:
+# 	s = s.replace("_", "+")
+# 	f = eval(s)
+# 	return f
 
 
 def parseMixedFraction(term: str) -> Tuple[int, int, int]:
-	message = "term has an invalid format"
+	"""
+	Parse fraction and return in as a tuple (<numerator>, <denominator>, <whole>).
+
+	Term is expected to be in one of the following forms ''.
+	:param term
+		String in either the mixed fraction (e.g. '1_2/3'), regular fraction (e.g. '1/2') or integer (e.g. '1') form.
+
+	:return tuple (<numerator>, <denominator>, <whole>)
+	"""
+	message = f"term '{term}' has invalid format"
 
 	if '/' in term:
 		if '_' in term:
-			if not re.match("[0-9]+_[0-9]+/[0-9]+$", term):
-				raise SyntaxError(message)
+			# test if term is in mixed fraction format e.g. 1_2/3
+			if not re.match("[+-]*[0-9]+_[0-9]+/[0-9]+$", term):
+				raise InputError(message)
+
 			whole, numerator, denominator = re.split("[_/]", term)
 			return int(numerator), int(denominator), int(whole)
+
 		else:
-			if not re.match("[0-9]+/[0-9]+$", term):
-				raise SyntaxError(message)
+			# test if term is in regular fraction format e.g. 1/2
+			if not re.match("[+-]*[0-9]+/[0-9]+$", term):
+				raise InputError(message)
+
 			numerator, denominator = term.split("/")
 			return int(numerator), int(denominator), 0
+
 	else:
-		if not re.match("[0-9]+$", term):
-			raise SyntaxError(message)
+		# test if term is in integer format e.g. 1
+		if not re.match("[+-]*[0-9]+$", term):
+			raise InputError(message)
+
 		return int(term), 1, 0
 
 
-def evaluatePostfix(postfix: Iterable[str]) -> float:
+def evaluatePostfix(postfix: Iterable[str]) -> Fraction:
 	"""Evaluate postfix expression"""
 	stack = []
 
@@ -88,11 +114,25 @@ def evaluatePostfix(postfix: Iterable[str]) -> float:
 	return stack.pop()
 
 
+validCharacters = "-+*/()_0123456789 "
+
+
 def parse(expression: str) -> Iterable[str]:
+	"""
+	Parse input expression and return the tokens, e.i. terms, operators and parentheses, as iterable.
+
+	Every pair of tokens except for parentheses (i.e. terms or operators) must be separated by spaces.
+	"""
 	if not expression:
-		raise SyntaxError("expression is empty")
-	if not re.match("[-+*/()_0-9 ]+$", expression):
-		raise SyntaxError("expression contains unsupported characters")
+		raise InputError("expression is empty")
+
+	obj = re.search("[^-+*/()_0-9 ]", expression)
+	if obj:
+		span = obj.span()
+		raise InputError(f"invalid character '{expression[span[0] : span[1]]}'", span)
+	# for i, char in enumerate(expression):
+	# 	if char not in validCharacters:
+	# 		raise InputError(f"invalid character '{char}'", i)
 
 	tokens = re.split("([ ()])", expression)  # split with respect to parentheses and spaces
 	tokens = filter(lambda string: string and string != " ", tokens)  # remove empty strings and spaces
@@ -115,10 +155,31 @@ def convertMixedFractions(expression: str) -> str:
 
 
 def approxEvaluate(expression: str) -> float:
+	"""
+	Evaluate expression with fractions numerically.
+
+	:param expression
+		Every pair of tokens except for parentheses (i.e. terms or operators) must be separated by spaces.
+
+	:raises InputError if the expression has invalid format.
+
+	:returns Result of evaluation.
+	"""
 	return eval(convertMixedFractions(expression))
 
 
-def evaluate(expression: str) -> float:
+def evaluate(expression: str) -> Fraction:
+	"""
+	Evaluate expression with fractions symbolically.
+
+	:param expression
+		Every pair of tokens except for parentheses (i.e. terms or operators) must be separated by spaces.
+
+	:raises InputError if the expression has invalid format.
+
+	:returns Result of evaluation
+	"""
+
 	infix = parse(expression)
 	postfix = infix2Postfix(infix)
 	return evaluatePostfix(postfix)
