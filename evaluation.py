@@ -31,12 +31,12 @@ def infix2Postfix(infix: Iterable[str]) -> List[str]:
 
 		elif token == ")":
 			if not tokens:
-				raise InputError("mismatched parenthesis")
+				raise InputError("mismatched parentheses")
 			topToken = tokens.pop()
 			while topToken != "(":
 				postfix.append(topToken)
 				if not tokens:
-					raise InputError("mismatched parenthesis")
+					raise InputError("mismatched parentheses")
 				topToken = tokens.pop()
 
 		else:
@@ -45,7 +45,7 @@ def infix2Postfix(infix: Iterable[str]) -> List[str]:
 	while tokens:
 		token = tokens.pop()
 		if token == "(":
-			raise InputError("mismatched parenthesis")
+			raise InputError("mismatched parentheses")
 		postfix.append(token)
 
 	return postfix
@@ -136,8 +136,9 @@ def convertMixedFractions(expression: str) -> str:
 	newTokens = []
 	for string in tokens:
 		if '_' in string:
+			sign = "-" if string and string.strip()[0] == "-" else "+"
 			newTokens.append('(')
-			newTokens.append(string.replace('_', '+'))
+			newTokens.append(string.replace('_', sign))
 			newTokens.append(')')
 		else:
 			newTokens.append(string)

@@ -1,4 +1,5 @@
 import unittest
+import math
 from random import randint
 
 from fraction import mixedFraction2Fraction, fraction2MixedFraction, calculateGreatestCommonDivisor, Fraction
@@ -14,14 +15,15 @@ fractionPairs = [
 		(randint(beg, end), randint(beg, end))
 	),
 	(
-		(randint(beg, end), randint(beg, end), randint(beg, end)),
-		(randint(beg, end), randint(beg, end), randint(beg, end))
+		(randint(0, end), randint(0, end), randint(beg, end)),
+		(randint(0, end), randint(0, end), randint(beg, end))
 	)
 ]
 
 
 def frac2Float(numerator: int, denominator: int = 1, whole: int = 0):
-	return whole + numerator / denominator
+	sign = int(math.copysign(1, whole))
+	return whole + sign * numerator / denominator
 
 
 class TestFraction(unittest.TestCase):
@@ -62,7 +64,7 @@ class TestFraction(unittest.TestCase):
 
 	def testInit(self):
 		testData = [((5,), (5, 1)), ((-36,), (-36, 1)), ((-12, 16), (-3, 4)), ((8, -9), (-8, 9)), ((5, -10), (-1, 2)),
-					((1, 2, -2), (-3, 2))]
+					((1, 2, -2), (-5, 2))]
 		for item in testData:
 			fraction = Fraction(*item[0])
 			self.assertEqual((fraction.numerator, fraction.denominator), item[1])
@@ -74,7 +76,7 @@ class TestFraction(unittest.TestCase):
 	def testStr(self):
 		testData = [((87,), "87"), ((4, 12), "1/3"), ((9, 3), "3"), ((0, 77), "0"), ((8, 3), "2_2/3"),
 					((4, 5, 3), "3_4/5"), ((9, 3, 3), "6"), ((11, 5, 1), "3_1/5"), ((-1, 2, 0), "-1/2"),
-					((-5, 2, 1), "-1_1/2"), ((1, 3, -4), "-3_2/3"), ((-2, 1, 0), "-2"), ((0, 1, -3), "-3")]
+					((1, 3, -4), "-4_1/3"), ((0, 1, -3), "-3")]
 
 		for item in testData:
 			self.assertEqual(str(Fraction(*item[0])), item[1])
