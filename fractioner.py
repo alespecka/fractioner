@@ -71,14 +71,7 @@ def evalExpression(expression: str, testMode: bool = False) -> Fraction:
 	return ans
 
 
-def main() -> None:
-	parser = argparse.ArgumentParser(description="Calculator for symbolic manipulation with fractions.")
-	parser.add_argument("-t", "--test", action="store_true", dest="testMode", help="run app in the test mode")
-	args = parser.parse_args()
-	testMode = args.testMode
-
-	print(welcomeString)
-
+def runApp(testMode: bool) -> None:
 	ans = None
 
 	while True:
@@ -99,7 +92,7 @@ def main() -> None:
 				else:
 					idx = expression.find("ans")
 					if idx >= 0:
-						raise InputError("variable 'ans' has not been set yet", span=(idx, idx+3))
+						raise InputError("variable 'ans' has not been set yet", span=(idx, idx + 3))
 
 				ans = evalExpression(expression, testMode)
 			except InputError as err:
@@ -107,16 +100,29 @@ def main() -> None:
 					print(expression)
 					print(" " * err.span[0] + "^" * (err.span[1] - err.span[0]))
 				print(err)
-			except ZeroDivisionError as err:
-				print(err)
+			except ArithmeticError as err:
+				print(f"arithmetic error: {err}")
+
+
+def main() -> None:
+	try:
+		parser = argparse.ArgumentParser(description="Calculator for symbolic manipulation with fractions.")
+		parser.add_argument("-t", "--test", action="store_true", dest="testMode", help="run app in the test mode")
+		args = parser.parse_args()
+
+		print(welcomeString)
+
+		runApp(args.testMode)
+	except KeyboardInterrupt:
+		return
 
 
 def testMain() -> None:
 	# expression = "1 - 16.0 * 3"
 	# expression = "-1/3"
 	# expression = "-1/3"
-	expression = "-1_1/2"
-	# expression = "-2"
+	# expression = "-1_1/2"
+	expression = "-2/0"
 	# expression = "(-2 * (1 + 1_1/2) - 3/4) "
 	# expression = "3 * 1_1/2 - 3_4/5"
 	# expression = "(1_1/4 * 4 + 5) * 1/3"
@@ -139,7 +145,7 @@ def testMain() -> None:
 			print(" " * err.span[0] + "^" * (err.span[1] - err.span[0]))
 		print(err)
 	except ZeroDivisionError as err:
-		print(err)
+		print(f"arithmetic error: {err}")
 
 
 if __name__ == "__main__":
