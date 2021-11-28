@@ -1,3 +1,5 @@
+"""Command-line program that symbolically evaluates expressions with fractions."""
+
 import argparse
 
 import evaluation
@@ -5,13 +7,51 @@ from input_error import InputError
 from fraction import Fraction
 
 
+welcomeString = """Welcome to Fractioner!
+
+For help type 'help'.
+To exit type 'exit'.
+"""
+
+helpString = """----------------------------------------------------------------------------------------
+Help for Fractioner 
+
+For help type 'help'.
+To exit type 'exit'.
+
+Fractioner is a symbolic fraction calculator.
+
+Valid expression may contain operators parentheses and operands. The expression must
+follow these rules:
+
+* Four operators are supported +, -, *, /.
+* Operands may be whole numbers, fractions or mixed fractions.
+* Mixed fractions are represented by <whole>_<numerator>/<denominator>, e.g. "1_2/3".
+* Operators and operand must be separated by one or more spaces.
+* Any number of pairs of parenthesis may be included.
+* Parenthesis do not need to be separated by spaces from operators or operands.
+* There is a single variable 'ans', which contains the result of the last expression.
+
+EXAMPLES
+--------
+Here is an example run:
+
+? 1/2 + 1/3 - 2
+-1_1/6
+? (2_3/4 - 1_1/5) * 5
+7_3/4
+? ((1 - 3) - (5/3 + 1/3)) * (2_3/8 + 9/8) / 1/2
+-28
+? ans / -7
+4
+
+As you can see above, we may use 'ans' variable, which stores the result of the previous
+expression.
+----------------------------------------------------------------------------------------
+"""
+
 symbol = "? "
 eps = 1e-12
-
-"""Command-line program that symbolically evaluates expressions with fractions."""
-
-
-helpString = "this is help string"
 
 
 def evalExpression(expression: str, testMode: bool = False) -> Fraction:
@@ -31,10 +71,12 @@ def evalExpression(expression: str, testMode: bool = False) -> Fraction:
 
 
 def main() -> None:
-	parser = argparse.ArgumentParser(description="Calculator for symbolic manipulation with strings.")
-	parser.add_argument("-t", "--test", action="store_true", dest="testMode", help="turn on the test mode")
+	parser = argparse.ArgumentParser(description="Calculator for symbolic manipulation with fractions.")
+	parser.add_argument("-t", "--test", action="store_true", dest="testMode", help="run app in the test mode")
 	args = parser.parse_args()
 	testMode = args.testMode
+
+	print(welcomeString)
 
 	ans = None
 
@@ -42,6 +84,8 @@ def main() -> None:
 		expression = input(symbol)
 
 		cmd = expression.strip().lower()
+		if not cmd:
+			continue
 		if cmd == "exit":
 			break
 		elif cmd == "help":
@@ -60,9 +104,7 @@ def main() -> None:
 			except InputError as err:
 				if err.span:
 					print(expression)
-					begin = err.span[0]
-					length = err.span[1] - err.span[0]
-					print(" " * begin + "^" * length)
+					print(" " * err.span[0] + "^" * (err.span[1] - err.span[0]))
 				print(err)
 			except ZeroDivisionError as err:
 				print(err)
@@ -71,7 +113,8 @@ def main() -> None:
 def testMain() -> None:
 	# expression = "1 - 16.0 * 3"
 	# expression = "-1/3"
-	expression = "-1/3"
+	# expression = "-1/3"
+	expression = "-2"
 	# expression = "(-2 * (1 + 1_1/2) - 3/4) "
 	# expression = "3 * 1_1/2 - 3_4/5"
 	# expression = "(1_1/4 * 4 + 5) * 1/3"
