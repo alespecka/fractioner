@@ -51,7 +51,7 @@ class Fraction:
 				return 0
 			return f"{signSymbol}{numerator}/{denominator}"
 		if numerator == 0:
-			return f"{whole}"
+			return f"{signSymbol}{whole}"
 		return f"{signSymbol}{whole}_{numerator}/{denominator}"
 
 	def __add__(self, other):
