@@ -65,7 +65,7 @@ def parseMixedFraction(operand: str) -> Tuple[int, int, int]:
 	if '/' in operand:
 		if '_' in operand:
 			# test if operand is in mixed fraction format e.g. 1_2/3
-			if not re.match("[+-]*[0-9]+_[0-9]+/[0-9]+$", operand):
+			if not re.match("[+-]?[0-9]+_[0-9]+/[0-9]+$", operand):
 				raise InputError(message)
 
 			whole, numerator, denominator = re.split("[_/]", operand)
@@ -73,7 +73,7 @@ def parseMixedFraction(operand: str) -> Tuple[int, int, int]:
 
 		else:
 			# test if operand is in regular fraction format e.g. 1/2
-			if not re.match("[+-]*[0-9]+/[0-9]+$", operand):
+			if not re.match("[+-]?[0-9]+/[0-9]+$", operand):
 				raise InputError(message)
 
 			numerator, denominator = operand.split("/")
@@ -81,7 +81,7 @@ def parseMixedFraction(operand: str) -> Tuple[int, int, int]:
 
 	else:
 		# test if operand is in integer format e.g. 1
-		if not re.match("[+-]*[0-9]+$", operand):
+		if not re.match("[+-]?[0-9]+$", operand):
 			raise InputError(message)
 
 		return int(operand), 1, 0
