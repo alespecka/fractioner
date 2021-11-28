@@ -9,7 +9,7 @@ Fractioner supports
 - all trendy operations, i.e. addition, subtraction, multiplication and division,
 - whole numbers, fractions, improper fractions and even mixed fractions as operands,
 - grouping with parenthesis,
-- the use of the result of the previous expression.
+- built-in variable ```ans```, which contains the result of the previous expression.
 
 ## Prerequisite
 
@@ -49,7 +49,7 @@ python -m unittest
 After running Fractioner we can start running expressions to be evaluated. The expression must follow these rules:
 * Four operators are supported +, -, *, /.
 * Operands may be whole numbers, fractions or mixed fractions.
-* Mixed fractions are represented by <whole>_<numerator>/<denominator>, e.g. "1_2/3".
+* Mixed fractions are represented by whole_numerator/denominator, e.g. "1_2/3".
 * Operators and operand must be separated by one or more spaces.
 * Any number of pairs of parenthesis may be included.
 * Parenthesis do not need to be separated by spaces from operators or operands.
