@@ -4,10 +4,10 @@ import math
 
 def calculateGreatestCommonDivisor(a: int, b: int) -> int:
 	"""Return greatest common divisor calculated by the Euclidean algorithm."""
-	while a != 0:
-		a, b = b % a, a
+	while b != 0:
+		a, b = b, a % b
 
-	return b
+	return a
 
 
 def mixedFraction2Fraction(numerator: int, denominator: int, whole: int) -> Tuple[int, int]:
@@ -32,18 +32,11 @@ class Fraction:
 
 		self.numerator, self.denominator = mixedFraction2Fraction(numerator, denominator, whole)
 
-		self.fixSigns()
 		self.simplify()
-
-	def fixSigns(self) -> None:
-		"""Make sure denominator is positive."""
-		denominatorSign = int(math.copysign(1, self.denominator))
-		self.numerator *= denominatorSign
-		self.denominator *= denominatorSign
 
 	def simplify(self) -> None:
 		"""Simplify the fraction by dividing the numerator and denominator by the greatest common divisor."""
-		divisor = calculateGreatestCommonDivisor(self.denominator, self.numerator)
+		divisor = calculateGreatestCommonDivisor(self.numerator, self.denominator)
 		self.numerator //= divisor
 		self.denominator //= divisor
 
