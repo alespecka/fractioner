@@ -57,41 +57,40 @@ def infix2Postfix(infix: Iterable[str]) -> List[str]:
 # 	return f
 
 
-def parseMixedFraction(term: str) -> Tuple[int, int, int]:
+def parseMixedFraction(operand: str) -> Tuple[int, int, int]:
 	"""
-	Parse fraction and return in as a tuple (<numerator>, <denominator>, <whole>).
+	Parse operand, which can be a whole number, fraction or mixed fraction.
 
-	Term is expected to be in one of the following forms ''.
-	:param term
+	:param operand
 		String in either the mixed fraction (e.g. '1_2/3'), regular fraction (e.g. '1/2') or integer (e.g. '1') form.
 
 	:return tuple (<numerator>, <denominator>, <whole>)
 	"""
-	message = f"term '{term}' has invalid format"
+	message = f"operand '{operand}' is invalid"
 
-	if '/' in term:
-		if '_' in term:
-			# test if term is in mixed fraction format e.g. 1_2/3
-			if not re.match("[+-]*[0-9]+_[0-9]+/[0-9]+$", term):
+	if '/' in operand:
+		if '_' in operand:
+			# test if operand is in mixed fraction format e.g. 1_2/3
+			if not re.match("[+-]*[0-9]+_[0-9]+/[0-9]+$", operand):
 				raise InputError(message)
 
-			whole, numerator, denominator = re.split("[_/]", term)
+			whole, numerator, denominator = re.split("[_/]", operand)
 			return int(numerator), int(denominator), int(whole)
 
 		else:
-			# test if term is in regular fraction format e.g. 1/2
-			if not re.match("[+-]*[0-9]+/[0-9]+$", term):
+			# test if operand is in regular fraction format e.g. 1/2
+			if not re.match("[+-]*[0-9]+/[0-9]+$", operand):
 				raise InputError(message)
 
-			numerator, denominator = term.split("/")
+			numerator, denominator = operand.split("/")
 			return int(numerator), int(denominator), 0
 
 	else:
-		# test if term is in integer format e.g. 1
-		if not re.match("[+-]*[0-9]+$", term):
+		# test if operand is in integer format e.g. 1
+		if not re.match("[+-]*[0-9]+$", operand):
 			raise InputError(message)
 
-		return int(term), 1, 0
+		return int(operand), 1, 0
 
 
 def evaluatePostfix(postfix: Iterable[str]) -> Fraction:
@@ -124,9 +123,9 @@ validCharacters = "-+*/()_0123456789 "
 
 def parse(expression: str) -> Iterable[str]:
 	"""
-	Parse input expression and return the tokens, e.i. terms, operators and parentheses, as iterable.
+	Parse input expression and return the tokens, e.i. operands, operators and parentheses, as iterable.
 
-	Every pair of tokens except for parentheses (i.e. terms or operators) must be separated by spaces.
+	Every pair of tokens except for parentheses (i.e. operands or operators) must be separated by spaces.
 	"""
 	if not expression:
 		raise InputError("expression is empty")
@@ -161,7 +160,7 @@ def approxEvaluate(expression: str) -> float:
 	Evaluate expression with fractions numerically.
 
 	:param expression
-		Every pair of tokens except for parentheses (i.e. terms or operators) must be separated by spaces.
+		Every pair of tokens except for parentheses (i.e. operands or operators) must be separated by spaces.
 
 	:raises InputError if the expression has invalid format.
 
@@ -175,7 +174,7 @@ def evaluate(expression: str) -> Fraction:
 	Evaluate expression with fractions symbolically.
 
 	:param expression
-		Every pair of tokens except for parentheses (i.e. terms or operators) must be separated by spaces.
+		Every pair of tokens except for parentheses (i.e. operands or operators) must be separated by spaces.
 
 	:raises InputError if the expression has invalid format.
 
