@@ -51,15 +51,9 @@ def infix2Postfix(infix: Iterable[str]) -> List[str]:
 	return postfix
 
 
-# def strFraction2Float(s: str) -> float:
-# 	s = s.replace("_", "+")
-# 	f = eval(s)
-# 	return f
-
-
 def parseMixedFraction(operand: str) -> Tuple[int, int, int]:
 	"""
-	Parse operand, which can be a whole number, fraction or mixed fraction.
+	Parse operand, which can be a whole number, a fraction or a mixed fraction.
 
 	:param operand
 		String in either the mixed fraction (e.g. '1_2/3'), regular fraction (e.g. '1/2') or integer (e.g. '1') form.
@@ -100,7 +94,7 @@ def evaluatePostfix(postfix: Iterable[str]) -> Fraction:
 	for token in postfix:
 		if token in operators:
 			if len(stack) < 2:
-				raise InputError()
+				raise InputError(f"operator '{token}' is missing one or both operands")
 			b = stack.pop()
 			a = stack.pop()
 			operation = operations[token]
@@ -111,14 +105,13 @@ def evaluatePostfix(postfix: Iterable[str]) -> Fraction:
 			# strFraction2Float(token)
 			stack.append(fraction)
 
-	# print(len(stack))
-	if len(stack) != 1:
+	if not stack:
 		raise InputError()
+	if len(stack) > 1:
+		operands = "', '".join(map(lambda fract: str(fract), stack))
+		raise InputError(f"operands '{operands}' do not have operator to act on them")
 
 	return stack.pop()
-
-
-validCharacters = "-+*/()_0123456789 "
 
 
 def parse(expression: str) -> Iterable[str]:
@@ -127,9 +120,6 @@ def parse(expression: str) -> Iterable[str]:
 
 	Every pair of tokens except for parentheses (i.e. operands or operators) must be separated by spaces.
 	"""
-	if not expression:
-		raise InputError("expression is empty")
-
 	searchObj = re.search("[^-+*/()_0-9 ]", expression)
 	if searchObj:
 		span = searchObj.span()
