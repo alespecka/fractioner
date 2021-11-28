@@ -8,7 +8,7 @@ Fractioner is your everyday command-line tool for symbolic manipulation with you
 Fractioner supports
 - all trendy operations, i.e. addition, subtraction, multiplication and division,
 - whole numbers, fractions, improper fractions and even mixed fractions as operands,
-- grouping with parenthesis,
+- grouping with parentheses,
 - built-in variable ```ans```, which contains the result of the previous expression.
 
 ## Prerequisite
@@ -51,20 +51,20 @@ After running Fractioner we can start running expressions to be evaluated. The e
 * Operands may be whole numbers, fractions or mixed fractions.
 * Mixed fractions are represented by whole_numerator/denominator, e.g. "1_2/3".
 * Operators and operand must be separated by one or more spaces.
-* Any number of pairs of parenthesis may be included.
-* Parenthesis do not need to be separated by spaces from operators or operands.
+* Any number of pairs of parentheses may be included.
+* Parentheses do not need to be separated by spaces from operators or operands.
 * There is a single variable 'ans', which contains the result of the last expression.
 
 ## Examples
 Here is an example run:
 ```
 ? 1/2 + 1/3 - 2
--1_1/6
+= -1_1/6
 ? (2_3/4 - 1_1/5) * 5
-7_3/4
+= 7_3/4
 ? ((1 - 3) - (5/3 + 1/3)) * (2_3/8 + 9/8) / 1/2
--28
+= -28
 ? ans / -7
-4
+= 4
 ```
 As you can see above, we may use 'ans' variable, which stores the result of the previous expression.

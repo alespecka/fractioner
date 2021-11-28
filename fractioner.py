@@ -28,8 +28,8 @@ follow these rules:
 * Operands may be whole numbers, fractions or mixed fractions.
 * Mixed fractions are represented by <whole>_<numerator>/<denominator>, e.g. "1_2/3".
 * Operators and operand must be separated by one or more spaces.
-* Any number of pairs of parenthesis may be included.
-* Parenthesis do not need to be separated by spaces from operators or operands.
+* Any number of pairs of parentheses may be included.
+* Parentheses do not need to be separated by spaces from operators or operands.
 * There is a single variable 'ans', which contains the result of the last expression.
 
 EXAMPLES
@@ -37,26 +37,27 @@ EXAMPLES
 Here is an example run:
 
 ? 1/2 + 1/3 - 2
--1_1/6
+= -1_1/6
 ? (2_3/4 - 1_1/5) * 5
-7_3/4
+= 7_3/4
 ? ((1 - 3) - (5/3 + 1/3)) * (2_3/8 + 9/8) / 1/2
--28
+= -28
 ? ans / -7
-4
+= 4
 
 As you can see above, we may use 'ans' variable, which stores the result of the previous
 expression.
 ----------------------------------------------------------------------------------------
 """
 
-symbol = "? "
+questionSymbol = "? "
+answerSymbol = "= "
 eps = 1e-12
 
 
 def evalExpression(expression: str, testMode: bool = False) -> Fraction:
 	ans = evaluation.evaluate(expression)
-	print(ans)
+	print(answerSymbol + str(ans))
 
 	if testMode:
 		approx = evaluation.approxEvaluate(expression)
@@ -81,7 +82,7 @@ def main() -> None:
 	ans = None
 
 	while True:
-		expression = input(symbol)
+		expression = input(questionSymbol)
 
 		cmd = expression.strip().lower()
 		if not cmd:
@@ -114,7 +115,8 @@ def testMain() -> None:
 	# expression = "1 - 16.0 * 3"
 	# expression = "-1/3"
 	# expression = "-1/3"
-	expression = "-2"
+	expression = "-1_1/2"
+	# expression = "-2"
 	# expression = "(-2 * (1 + 1_1/2) - 3/4) "
 	# expression = "3 * 1_1/2 - 3_4/5"
 	# expression = "(1_1/4 * 4 + 5) * 1/3"
