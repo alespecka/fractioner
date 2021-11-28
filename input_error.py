@@ -9,7 +9,7 @@ class InputError(Exception):
 		self.span: Tuple[int, int] = span
 
 	def __str__(self):
-		msg = "input error"
+		msg = "malformed input"
 		if self.message:
 			msg += f": {self.message}"
 
