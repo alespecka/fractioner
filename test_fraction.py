@@ -31,6 +31,9 @@ class TestFraction(unittest.TestCase):
 		self.assertEqual(calculateGreatestCommonDivisor(12, 1), 1)
 		self.assertEqual(calculateGreatestCommonDivisor(0, 55), 55)
 		self.assertEqual(calculateGreatestCommonDivisor(36, 0), 36)
+		self.assertEqual(calculateGreatestCommonDivisor(-21, 49), 7)
+		self.assertEqual(calculateGreatestCommonDivisor(21, -49), -7)
+		self.assertEqual(calculateGreatestCommonDivisor(-21, -49), -7)
 
 	def testMixedFraction2Fraction(self):
 		fractionExamples = [
@@ -57,15 +60,23 @@ class TestFraction(unittest.TestCase):
 		for example in fractionExamples:
 			self.assertEqual(fraction2MixedFraction(*example["fraction"]), example["mixedFraction"])
 
+	def testInit(self):
+		testData = [((5,), (5, 1)), ((-36,), (-36, 1)), ((-12, 16), (-3, 4)), ((8, -9), (-8, 9)), ((5, -10), (-1, 2)),
+					((1, 2, -2), (-3, 2))]
+		for item in testData:
+			fraction = Fraction(*item[0])
+			self.assertEqual((fraction.numerator, fraction.denominator), item[1])
+
 	def testFloat(self):
 		n, d, w = 33, 4, 2
 		self.assertAlmostEqual(float(Fraction(n, d, w)), frac2Float(n, d, w))
 
 	def testStr(self):
-		data = [((87,), "87"), ((4, 12), "1/3"), ((9, 3), "3"), ((0, 77), "0"), ((8, 3), "2_2/3"), ((4, 5, 3), "3_4/5"),
-			((9, 3, 3), "6"), ((11, 5, 1), "3_1/5"), ((-1, 2, 0), "-1/2"), ((-5, 2, 1), "-1_1/2"), ((1, 3, -4), "-3_2/3")]
+		testData = [((87,), "87"), ((4, 12), "1/3"), ((9, 3), "3"), ((0, 77), "0"), ((8, 3), "2_2/3"),
+					((4, 5, 3), "3_4/5"), ((9, 3, 3), "6"), ((11, 5, 1), "3_1/5"), ((-1, 2, 0), "-1/2"),
+					((-5, 2, 1), "-1_1/2"), ((1, 3, -4), "-3_2/3")]
 
-		for item in data:
+		for item in testData:
 			self.assertEqual(str(Fraction(*item[0])), item[1])
 
 	def testAdd(self):
