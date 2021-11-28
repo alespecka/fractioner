@@ -15,9 +15,12 @@ def mixedFraction2Fraction(numerator: int, denominator: int, whole: int) -> Tupl
 	return numerator + whole * denominator, denominator
 
 
-def fraction2MixedFraction(numerator: int, denominator: int) -> Tuple[int, int, int]:
-	"""Convert regular fraction to mixed fraction and return in as a tuple (<numerator>, <denominator>, <whole>)."""
-	return numerator % denominator, denominator, numerator // denominator
+def fraction2MixedFraction(numerator: int, denominator: int) -> Tuple[int, int, int, int]:
+	"""Convert regular fraction to mixed fraction and return the tuple (<numerator>, <denominator>, <whole>, <sign>)."""
+	sign = int(math.copysign(1, numerator * denominator))
+	num = abs(numerator)
+	den = abs(denominator)
+	return num % den, den, num // den, sign
 
 
 class Fraction:
@@ -29,7 +32,14 @@ class Fraction:
 
 		self.numerator, self.denominator = mixedFraction2Fraction(numerator, denominator, whole)
 
+		self.fixSigns()
 		self.simplify()
+
+	def fixSigns(self) -> None:
+		"""Make sure denominator is positive."""
+		denominatorSign = int(math.copysign(1, self.denominator))
+		self.numerator *= denominatorSign
+		self.denominator *= denominatorSign
 
 	def simplify(self) -> None:
 		"""Simplify the fraction by dividing the numerator and denominator by the greatest common divisor."""
@@ -38,16 +48,18 @@ class Fraction:
 		self.denominator //= divisor
 
 	def __str__(self):
-		numerator, denominator, whole = fraction2MixedFraction(self.numerator, self.denominator)
+		numerator, denominator, whole, sign = fraction2MixedFraction(self.numerator, self.denominator)
+		signSymbol = "-" if sign < 0 else ""
+
 		if whole == 0:
 			if denominator == 1:
-				return f"{numerator}"
+				return f"{signSymbol}{numerator}"
 			if numerator == 0:
 				return 0
-			return f"{numerator}/{denominator}"
+			return f"{signSymbol}{numerator}/{denominator}"
 		if numerator == 0:
 			return f"{whole}"
-		return f"{whole}_{numerator}/{denominator}"
+		return f"{signSymbol}{whole}_{numerator}/{denominator}"
 
 	def __add__(self, other):
 		numerator = self.numerator * other.denominator + self.denominator * other.numerator
