@@ -50,14 +50,14 @@ python3 -m unittest
 ```
 
 ## Input
-After running Fractioner we can start running expressions to be evaluated. The expression must follow these rules:
+After running Fractioner we can start typing expressions to be evaluated. An expression is valid only if it follows these rules:
 * Four operators are supported +, -, *, /.
 * Operands may be whole numbers, fractions or mixed fractions.
 * Mixed fractions are represented by whole_numerator/denominator, e.g. "1_2/3".
 * Operators and operand must be separated by one or more spaces.
 * Any number of pairs of parentheses may be included.
 * Parentheses do not need to be separated by spaces from operators or operands.
-* There is a single variable 'ans', which contains the result of the last expression.
+* There is a single variable ```ans```, which contains the result of the last expression.
 
 ## Examples
 Here is an example run:
@@ -71,4 +71,4 @@ Here is an example run:
 ? ans / -7
 = 4
 ```
-As you can see above, we may use 'ans' variable, which stores the result of the previous expression.
+As you can see above, we may use ```ans``` variable, which stores the result of the previous expression.
