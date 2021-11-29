@@ -13,9 +13,6 @@ def calculateGreatestCommonDivisor(a: int, b: int) -> int:
 def mixedFraction2Fraction(numerator: int, denominator: int, whole: int) -> Tuple[int, int]:
 	"""Convert mixed fraction to regular fraction and return it as a tuple (<numerator>, <denominator>)."""
 
-	if whole != 0 and (numerator < 0 or denominator < 0):
-		raise ArithmeticError("numerator and denominator must be positive when part of mixed fraction")
-
 	sign = int(math.copysign(1, whole))
 	return sign * numerator + whole * denominator, denominator
 
