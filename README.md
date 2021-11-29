@@ -9,9 +9,10 @@ Fractioner supports
 - all trendy operations, i.e. addition, subtraction, multiplication and division,
 - whole numbers, fractions, improper fractions and even mixed fractions as operands,
 - grouping with parentheses,
-- built-in variable ```ans```, which contains the result of the previous expression.
+- built-in variable ```ans```, which contains the result of the previous expression,
+- prefix and postfix notation in addition to the traditional infix notation, which is very interesting but also entirely useless.
 
-## Prerequisite
+## Prerequisites
 
 * [Python 3](https://www.python.org/)
 
@@ -24,25 +25,29 @@ git clone https://github.com/alespecka/fractioner.git
 ```
 
 ## Start application
-Navigate to the directory containing Fractioner using command line of your choice and run the command:
+Navigate to the directory containing Fractioner using command line of your choice and run the command
+```
+python3 fractioner.py
+```
+or
 ```
 python fractioner.py
 ```
-Now you can start typing expressions and Fractioner will evaluate them. For help type ```help```. To exit the application type ```exit```.
+depending on which command links to Python 3 on your system. Now you can start typing expressions and Fractioner will evaluate them. For help type ```help```. To exit the application type ```exit```.
 
 To get command-line help run:
 ```
-python fractioner.py -h
+python3 fractioner.py -h
 ```
-Fractioner also offers the test mode by running:
+Fractioner also offers a test mode by running:
 ```
-python fractioner.py -t
+python3 fractioner.py -t
 ```
 The idea here is that each expression is evaluated both symbolically and numerically and the results are compared. If the difference between the two results is less than 10^-12, we call it a success.
 
 To run the unit tests execute:
 ```
-python -m unittest
+python3 -m unittest
 ```
 
 ## Input
