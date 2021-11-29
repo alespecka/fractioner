@@ -1,5 +1,5 @@
 # Fractioner
-### The fraction calculator for your life
+### The fraction calculator for life
 
 Fractioner is your everyday command-line tool for symbolic manipulation with your fractions!
 
@@ -9,8 +9,7 @@ Fractioner supports
 - all trendy operations, i.e. addition, subtraction, multiplication and division,
 - whole numbers, fractions, improper fractions and even mixed fractions as operands,
 - grouping with parentheses,
-- built-in variable ```ans```, which contains the result of the previous expression,
-- prefix and postfix notation in addition to the traditional infix notation, which is very interesting but also entirely useless.
+- built-in variable ```ans```, which contains the result of the previous expression.
 
 ## Prerequisites
 

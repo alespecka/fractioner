@@ -56,6 +56,7 @@ eps = 1e-12
 
 
 def runTest(expression: str, ans: Fraction) -> None:
+	"""Run test and print result to the standard output."""
 	approx = evaluation.approxEvaluate(expression)
 	error = abs(float(ans) - approx)
 	msg = f"symbolic solution: {float(ans):.4g}, numeric solution: {approx:.4g}, absolute error: {error:.4g}"
