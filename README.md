@@ -1,7 +1,7 @@
 # Fractioner
 ### The fraction calculator for life
 
-Fractioner is your everyday command-line tool for symbolic manipulation with your fractions!
+Fractioner is your everyday command-line tool for manipulation with your fractions!
 
 ## Features
 
@@ -42,7 +42,7 @@ Fractioner also offers a test mode by running:
 ```
 python3 fractioner.py -t
 ```
-The idea here is that each expression is evaluated both symbolically and numerically and the results are compared. If the difference between the two results is less than 10^-12, we call it a success.
+The idea here is that each expression is evaluated both as fractions and decimal numbers and the results are compared. If the difference between the two results is less than 10^-12, we call it a success.
 
 To run the unit tests execute:
 ```
